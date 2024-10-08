@@ -10,12 +10,12 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
         /// <summary>
         /// Min value's lenght
         /// </summary>
-        public abstract int? MIN_LENGHT { get; }
+        public abstract int MIN_LENGHT { get; }
 
         /// <summary>
         /// Max value's lenght
         /// </summary>
-        public abstract int? MAX_LENGHT { get; }
+        public abstract int MAX_LENGHT { get; }
 
         /// <summary>
         /// Represents string object that always has not null, not empty and not only white spaces string value
@@ -23,16 +23,16 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
         /// <param name="value"> Stored not null, not empty and not only white spaces string value </param>
         /// <param name="validate"> Additional validation method </param>
         /// <exception cref="StringObjectEmptyOrWhiteSpacesException"></exception>
-        public StringObject(string value, Action<string> validate) : base(value, validate)
+        public StringObject(string value, Action<string>? validate = null) : base(value, validate)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new StringObjectEmptyOrWhiteSpacesException(GetType(), value);
 
-            if (MIN_LENGHT != null && value.Length < MIN_LENGHT)
-                throw new StringObjectMinLenghtException(GetType(), value.Length, MIN_LENGHT.Value);
+            if (value.Length < MIN_LENGHT)
+                throw new StringObjectMinLenghtException(GetType(), value.Length, MIN_LENGHT);
 
-            if (MAX_LENGHT != null && value.Length > MAX_LENGHT)
-                throw new StringObjectMaxLenghtException(GetType(), value.Length, MAX_LENGHT.Value);
+            if (value.Length > MAX_LENGHT)
+                throw new StringObjectMaxLenghtException(GetType(), value.Length, MAX_LENGHT);
         }
     }
 }

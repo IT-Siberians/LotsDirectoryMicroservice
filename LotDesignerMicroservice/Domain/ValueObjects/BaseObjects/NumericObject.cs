@@ -8,18 +8,19 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
     /// </summary>
     /// <typeparam name="T"> Object's numeric type </typeparam>
     public abstract class NumericObject<T> : ValueObject<T>,
-        IComparisonOperators<NumericObject<T>, NumericObject<T>, bool>
+        IComparisonOperators<NumericObject<T>, NumericObject<T>, bool>,
+        IEqualityOperators<NumericObject<T>, NumericObject<T>, bool>
         where T : struct, INumber<T>
     {
         /// <summary>
         /// Object's min value
         /// </summary>
-        public abstract T? MIN_VALUE { get; }
+        public abstract T MIN_VALUE { get; }
 
         /// <summary>
         /// Object's max value
         /// </summary>
-        public abstract T? MAX_VALUE { get; }
+        public abstract T MAX_VALUE { get; }
 
         /// <summary>
         /// Represents numeric object that always has not null value
@@ -28,13 +29,13 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
         /// <param name="validate"> Additional validation method </param>
         /// <exception cref="NumericObjectMinValueException{T}"></exception>
         /// <exception cref="NumericObjectMaxValueException{T}"></exception>
-        public NumericObject(T value, Action<T> validate) : base(value, validate)
+        public NumericObject(T value, Action<T>? validate = null) : base(value, validate)
         {
-            if (MIN_VALUE != null && value < MIN_VALUE)
-                throw new NumericObjectMinValueException<T>(GetType(), value, MIN_VALUE.Value);
+            if (value < MIN_VALUE)
+                throw new NumericObjectMinValueException<T>(GetType(), value, MIN_VALUE);
 
-            if (MAX_VALUE != null && value > MAX_VALUE)
-                throw new NumericObjectMaxValueException<T>(GetType(), value, MAX_VALUE.Value);
+            if (value > MAX_VALUE)
+                throw new NumericObjectMaxValueException<T>(GetType(), value, MAX_VALUE);
         }
 
         public override int GetHashCode() => Value!.GetHashCode();

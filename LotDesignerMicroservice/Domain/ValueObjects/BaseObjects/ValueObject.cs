@@ -12,14 +12,14 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
         /// General constructor for all value objects
         /// </summary>
         /// <param name="value"></param>
-        public ValueObject(T value, Action<T> validate)
+        public ValueObject(T value, Action<T>? validate = null)
         {
-            if (validate == null)
-                throw new ValueObjectValidatorNullException(GetType());
             if (value == null)
                 throw new ValueObjectNullException(GetType());
 
-            validate(value);
+            if (validate != null)
+                validate(value);
+
             Value = value;
         }
 
