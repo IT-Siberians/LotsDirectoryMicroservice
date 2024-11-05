@@ -1,1 +1,1 @@
-# LotsDirectoryMicroservice
+# LotDesignerMicroservice
