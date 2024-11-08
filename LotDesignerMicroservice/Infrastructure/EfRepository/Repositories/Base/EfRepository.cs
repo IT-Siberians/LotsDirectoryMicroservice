@@ -9,44 +9,59 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories.Base
         where TEntity : Entity<TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        public virtual async Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
-            context.Add(entity);
+            var entry = await context.AddAsync(entity, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
+
+            return entry.Entity;
         }
 
-        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
-            context.Remove(entity);
+
+            var entityForDelete = await GetByIdAsync(entity.Id, cancellationToken: cancellationToken);
+
+            if (entityForDelete is null)
+            {
+                return false;
+            }
+
+            var entry = context.Remove(entity);
             await context.SaveChangesAsync(cancellationToken);
+
+            return entry.State == EntityState.Deleted;
         }
 
-        public virtual async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> DeleteAsync(TKey id, CancellationToken cancellationToken = default)
         {
             var entity = await GetByIdAsync(id, cancellationToken);
-            await DeleteAsync(entity!, cancellationToken);
+            return await DeleteAsync(entity!, cancellationToken);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
             => await context.Set<TEntity>().ToListAsync(cancellationToken);
 
-        public virtual async Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
-        {
-            var foundEntity = await context.Set<TEntity>().FindAsync(id, cancellationToken);
+        public virtual async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
+            => await context.Set<TEntity>().FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
 
-            if (foundEntity is null)
-                throw new ArgumentNullException(nameof(foundEntity), "Received entity is null");
-
-            return foundEntity;
-        }
-
-        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
-            context.Update(entity);
+
+            var entityForUpdate = await GetByIdAsync(entity.Id, cancellationToken: cancellationToken);
+
+            if (entityForUpdate is null)
+            {
+                return false;
+            }
+
+            var entry = context.Update(entity);
             await context.SaveChangesAsync(cancellationToken);
+
+            return entry.State == EntityState.Modified;
         }
 
         protected virtual void EntityValidation(TEntity entity)

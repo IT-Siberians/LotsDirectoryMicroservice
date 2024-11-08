@@ -1,4 +1,5 @@
 ﻿using LotDesignerMicroservice.Domain.Entities.Entities;
+using LotDesignerMicroservice.Domain.ValueObjects.Constants;
 using LotDesignerMicroservice.Domain.ValueObjects.StringObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,7 +14,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
 
             builder.Property(x => x.UserName)
                 .IsRequired()
-                .HasMaxLength(30)
+                .HasMaxLength(UserNameConstants.MAX_LENGHT)
                 .HasConversion(
                     username => username.Value,
                     value => new UserName(value)

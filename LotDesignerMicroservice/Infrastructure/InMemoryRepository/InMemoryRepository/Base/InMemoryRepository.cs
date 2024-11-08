@@ -17,50 +17,45 @@ namespace LotDesignerMicroservice.Infrastructure.InMemoryRepository.Base
 
         protected ImmutableList<TEntity> Entities { get; set; }
 
-        public virtual Task CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
             Entities.Add(entity);
-            return Task.CompletedTask;
+            return Task.FromResult(entity);
         } 
 
-        public virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
             Entities.Remove(entity);
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
-        public virtual async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> DeleteAsync(TKey id, CancellationToken cancellationToken = default)
         {
             var entity = await GetByIdAsync(id, cancellationToken);
-            await DeleteAsync(entity!, cancellationToken);
-            return;
+            return await DeleteAsync(entity!, cancellationToken);
         }
 
         public virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
             => Task.FromResult(Entities.AsEnumerable());
 
-        public virtual Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
+        public virtual Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
         {
             var foundEntity = Entities.FirstOrDefault(x => x.Id.Equals(id));
-
-            if (foundEntity is null)
-                throw new ArgumentNullException(nameof(foundEntity), "Received entity is null");
-
             return Task.FromResult(foundEntity);
         }
 
-        public virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             EntityValidation(entity);
             var foundEntity = Entities.FirstOrDefault(x => x.Id.Equals(entity.Id));
 
             if (foundEntity is null)
-                throw new ArgumentNullException(nameof(foundEntity), "Received entity is null");
+                Task.FromResult(false);
 
             Entities.Replace(foundEntity, entity);
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
         protected virtual void EntityValidation(TEntity entity)

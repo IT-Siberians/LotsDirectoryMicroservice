@@ -10,15 +10,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories
     {
         private readonly DbSet<Seller> _sellers = context.Set<Seller>();
 
-        public async Task<Seller> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
-        {
-            var seller = await _sellers
-                .FirstOrDefaultAsync(s => s.UserName.Value.Equals(username), cancellationToken);
-
-            if (seller is null)
-                throw new ArgumentNullException(nameof(seller), $"Not found seller with username {username}");
-
-            return seller;
-        }
+        public async Task<Seller?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
+            => await _sellers.FirstOrDefaultAsync(s => s.UserName.Value.Equals(username), cancellationToken);
     }
 }

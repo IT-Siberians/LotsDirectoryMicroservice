@@ -4,6 +4,7 @@ using LotDesignerMicroservice.Domain.ValueObjects.NumericObjects;
 using LotDesignerMicroservice.Domain.ValueObjects.DateTimeObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using LotDesignerMicroservice.Domain.ValueObjects.Constants;
 
 namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
 {
@@ -12,6 +13,8 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
         public void Configure(EntityTypeBuilder<LotCard> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             builder.Property(x => x.CreationDateTime)
                 .IsRequired()
@@ -29,7 +32,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
 
             builder.Property(x => x.Title)
                 .IsRequired()
-                .HasMaxLength(50)
+                .HasMaxLength(TitleConstants.MAX_LENGHT)
                 .HasConversion(
                     title => title.Value,
                     value => new Title(value)
@@ -37,7 +40,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
 
             builder.Property(x => x.Description)
                 .IsRequired()
-                .HasMaxLength(20000)
+                .HasMaxLength(TextConstants.MAX_LENGHT)
                 .HasConversion(
                     description => description.Value,
                     value => new Text(value)
