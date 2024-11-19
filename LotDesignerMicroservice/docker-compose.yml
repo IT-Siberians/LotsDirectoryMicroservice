@@ -1,0 +1,33 @@
+services:
+  lotdesignermicroservice.presentation.webapi:
+    image: ${DOCKER_REGISTRY-}lotdesignermicroservicepresentationwebapi
+    build:
+      context: .
+      dockerfile: Presentation/LotDesignerMicroservice.Presentation.WebApi/Dockerfile
+    restart: always
+    ports:
+      - "3000:8080"
+    depends_on:
+       db:
+        condition: service_healthy
+  db:
+    image: postgres:latest
+    container_name: local_pgdb_lotscards
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  local_pgdata:
+  pgadmin-data:

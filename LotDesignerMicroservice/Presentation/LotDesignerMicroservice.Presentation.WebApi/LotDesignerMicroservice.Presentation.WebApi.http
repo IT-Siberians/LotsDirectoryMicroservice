@@ -1,0 +1,6 @@
+@LotDesignerMicroservice.Presentation.WebApi_HostAddress = http://localhost:5196
+
+GET {{LotDesignerMicroservice.Presentation.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
