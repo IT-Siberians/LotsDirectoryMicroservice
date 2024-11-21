@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Entities\LotDesignerMicroservice.Domain.Entities.csproj" />
+    <ProjectReference Include="..\..\Domain\RepositoriesAbstractions\LotDesignerMicroservice.Domain.RepositoriesAbstractions.csproj" />
+    <ProjectReference Include="..\..\Domain\ValueObjects\LotDesignerMicroservice.Domain.ValueObjects.csproj" />
+    <ProjectReference Include="..\LotDesignerMicroservice.Application.Models\LotDesignerMicroservice.Application.Models.csproj" />
+  </ItemGroup>
+
+</Project>
