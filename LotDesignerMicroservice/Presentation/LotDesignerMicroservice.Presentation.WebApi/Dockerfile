@@ -14,9 +14,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Presentation/LotDesignerMicroservice.Presentation.WebApi/LotDesignerMicroservice.Presentation.WebApi.csproj", "Presentation/LotDesignerMicroservice.Presentation.WebApi/"]
 COPY ["Application/LotDesignerMicroservice.Application.Models/LotDesignerMicroservice.Application.Models.csproj", "Application/LotDesignerMicroservice.Application.Models/"]
+COPY ["Application/LotDesignerMicroservice.Application.Services/LotDesignerMicroservice.Application.Services.csproj", "Application/LotDesignerMicroservice.Application.Services/"]
 COPY ["Domain/Entities/LotDesignerMicroservice.Domain.Entities.csproj", "Domain/Entities/"]
 COPY ["Domain/ValueObjects/LotDesignerMicroservice.Domain.ValueObjects.csproj", "Domain/ValueObjects/"]
-COPY ["Application/LotDesignerMicroservice.Application.Services/LotDesignerMicroservice.Application.Services.csproj", "Application/LotDesignerMicroservice.Application.Services/"]
 COPY ["Domain/RepositoriesAbstractions/LotDesignerMicroservice.Domain.RepositoriesAbstractions.csproj", "Domain/RepositoriesAbstractions/"]
 COPY ["Infrastructure/EfRepository/LotDesignerMicroservice.Infrastructure.EfRepository.csproj", "Infrastructure/EfRepository/"]
 RUN dotnet restore "./Presentation/LotDesignerMicroservice.Presentation.WebApi/LotDesignerMicroservice.Presentation.WebApi.csproj"
