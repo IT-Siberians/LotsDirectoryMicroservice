@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotDesignerMicroservice.App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotDesignerMicroservice.Application.Services", "Application\LotDesignerMicroservice.Application.Services\LotDesignerMicroservice.Application.Services.csproj", "{4D004EFB-D9FA-45F1-A80C-4547588DD994}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{1813E400-6B6A-487D-AE98-BB52ADB2A947}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotDesignerMicroservice.Presentation.WebApi", "Presentation\LotDesignerMicroservice.Presentation.WebApi\LotDesignerMicroservice.Presentation.WebApi.csproj", "{94F74A1C-1AD8-494C-BFD5-F360A7477AAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{4D004EFB-D9FA-45F1-A80C-4547588DD994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D004EFB-D9FA-45F1-A80C-4547588DD994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D004EFB-D9FA-45F1-A80C-4547588DD994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F74A1C-1AD8-494C-BFD5-F360A7477AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F74A1C-1AD8-494C-BFD5-F360A7477AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F74A1C-1AD8-494C-BFD5-F360A7477AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F74A1C-1AD8-494C-BFD5-F360A7477AAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{EDD08918-14FB-4BFA-BEBD-16527ECC7560} = {8BA745FA-4F82-4939-8BAE-257B596CDCAA}
 		{ECE03124-839C-4391-A885-3696929B7314} = {3F92E02E-FF13-4FDB-AEED-FD0DC53A8C5D}
 		{4D004EFB-D9FA-45F1-A80C-4547588DD994} = {3F92E02E-FF13-4FDB-AEED-FD0DC53A8C5D}
+		{94F74A1C-1AD8-494C-BFD5-F360A7477AAA} = {1813E400-6B6A-487D-AE98-BB52ADB2A947}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DBF268CB-6CE4-45C7-9561-E56D2179C411}
