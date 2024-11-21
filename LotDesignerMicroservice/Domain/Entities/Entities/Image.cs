@@ -21,11 +21,9 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
         /// Initializes a new instance of a <see cref="Image"></see> class
         /// </summary>
         /// <param name="url"> Image source url </param>
-        public Image(Uri url, LotCard lotCard)
+        public Image(Uri url)
         {
-            Id = Guid.NewGuid();
             Url = url;
-            LotCard = lotCard;
         }
 
         /// <summary>
