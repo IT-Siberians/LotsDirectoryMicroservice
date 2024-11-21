@@ -73,8 +73,8 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
             Price priceStep,
             Price? repurchasePrice,
             TradeDuration tradeTime,
-            LotCardState state,
-            Seller seller)
+            Seller seller,
+            IEnumerable<Image> images = default)
         {
             Title = title ?? throw new EntityNullValueException(GetType(), nameof(Title));
             Description = description ?? throw new EntityNullValueException(GetType(), nameof(Description));
@@ -82,8 +82,13 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
             PriceStep = priceStep ?? throw new EntityNullValueException(GetType(), nameof(PriceStep));
             RepurchasePrice = repurchasePrice;
             TradeDuration = tradeTime ?? throw new EntityNullValueException(GetType(), nameof(TradeDuration));
-            State = state;
             Seller = seller ?? throw new EntityNullValueException(GetType(), nameof(Seller));
+
+            CreationDateTime = DateTime.UtcNow;
+            State = LotCardState.Created;
+
+            if (images is not null)
+                _images.AddRange(images);
         }
 
         /// <summary>
@@ -178,6 +183,12 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
             LastModifiedDateTime = DateTime.UtcNow;
         }
 
+        public void ClearRepurchasePrice()
+        {
+            RepurchasePrice = null;
+            LastModifiedDateTime = DateTime.UtcNow;
+        }
+
         /// <summary>
         /// Set lot card trade duration
         /// </summary>
@@ -212,13 +223,9 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
         /// Add new lot card image
         /// </summary>
         /// <param name="newImage"> New lot card image </param>
-        public void AddImage(Image newImage)
+        public void AddImages(IEnumerable<Image> newImages)
         {
-            if (_images.Contains(newImage))
-                throw new EntityEqualedValueException(GetType(), nameof(Image));
-
-            _images.Add(newImage);
-
+            _images.AddRange(newImages);
             LastModifiedDateTime = DateTime.UtcNow;
         }
 
@@ -226,13 +233,9 @@ namespace LotDesignerMicroservice.Domain.Entities.Entities
         /// Remove existing lot card image
         /// </summary>
         /// <param name="image"> Removing lot card image </param>
-        public void RemoveImage(Image image)
+        public void RemoveImages(IEnumerable<Image> images)
         {
-            if (!_images.Contains(image))
-                throw new EntityNullValueException(GetType(), nameof(Image));
-
-            _images.Remove(image);
-
+            _images.RemoveAll(x => images.Contains(x));
             LastModifiedDateTime = DateTime.UtcNow;
         }
     }

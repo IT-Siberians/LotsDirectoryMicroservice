@@ -13,10 +13,18 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
         public override string? ToString() => Value!;
 
         public bool Equals(StringValueObject? other)
-            => StringComparer.Ordinal.Equals(this, other);
+        {
+            if (other is null)
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (GetType() != other.GetType())
+                return false;
+            return other.Value!.Equals(Value);
+        }
 
         public override bool Equals(object? other)
-            => StringComparer.Ordinal.Equals(this, other);
+            => Equals(other as StringValueObject);
 
         public override int GetHashCode()
             => StringComparer.Ordinal.GetHashCode(this);

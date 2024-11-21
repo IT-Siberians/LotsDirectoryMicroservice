@@ -82,7 +82,13 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
                 .WithMany("_lotCards")
                 .IsRequired();
 
-            builder.HasMany(x => x.Images).WithOne(i => i.LotCard);
+            builder.Navigation(x => x.Seller)
+                .AutoInclude();
+
+            builder.HasMany(x => x.Images)
+                .WithOne(i => i.LotCard);
+
+            builder.Navigation(x => x.Images);
         }
     }
 }

@@ -16,17 +16,19 @@ namespace LotDesignerMicroservice.Domain.Entities.Base
         /// </summary>
         public TKey Id { get; protected set; }
 
-        public override bool Equals(object? other) => Equals(other);
-
         public bool Equals(Entity<TKey>? other)
         {
-            if (other == null || other.GetType() != GetType())
-            {
+            if (other is null)
                 return false;
-            }
-
-            return Equals(Id, other.Id);
+            if (ReferenceEquals(this, other))
+                return true;
+            if (GetType() != other.GetType())
+                return false;
+            return other.Id!.Equals(Id);
         }
+
+        public override bool Equals(object? other)
+            => Equals(other as Entity<TKey>);
 
         public override int GetHashCode()
             => Id!.GetHashCode();

@@ -9,13 +9,14 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories.Base
         where TEntity : Entity<TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<TKey?> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            EntityValidation(entity);
-            var entry = await context.AddAsync(entity, cancellationToken);
+            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
+            await context.Set<TEntity>().AddAsync(entity, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
-            return entry.Entity;
+            return entity.Id;
         }
 
         public virtual async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -49,7 +50,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories.Base
 
         public virtual async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            EntityValidation(entity);
+            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
             var entityForUpdate = await GetByIdAsync(entity.Id, cancellationToken: cancellationToken);
 
@@ -58,10 +59,8 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories.Base
                 return false;
             }
 
-            var entry = context.Update(entity);
-            await context.SaveChangesAsync(cancellationToken);
-
-            return entry.State == EntityState.Modified;
+            var entry = context.Set<TEntity>().Update(entity);
+            return await context.SaveChangesAsync(cancellationToken) > 0;
         }
 
         protected virtual void EntityValidation(TEntity entity)

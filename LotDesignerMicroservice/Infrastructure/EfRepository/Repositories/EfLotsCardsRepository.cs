@@ -10,17 +10,27 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories
     {
         private readonly DbSet<LotCard> _lotsCards = context.Set<LotCard>();
 
-        public async Task<IEnumerable<LotCard>> GetLotsCardsBySeller(Seller seller, CancellationToken cancellationToken = default)
-        {
-            if (seller is null)
-                throw new ArgumentNullException(nameof(seller));
-
-            var lotsCards = await _lotsCards
+        public override async Task<IEnumerable<LotCard>> GetAllAsync(CancellationToken cancellationToken = default)
+            => await _lotsCards
                 .Include(s => s.Seller)
-                .Where(l => l.Seller.Equals(seller))
+                .Include(c => c.Images)
                 .ToListAsync(cancellationToken);
 
-            return lotsCards.AsEnumerable();
+        public override async Task<LotCard?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+            => await _lotsCards
+                .Include(s => s.Seller)
+                .Include(c => c.Images)
+                .FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+
+        public async Task<IEnumerable<LotCard>> GetAllBySellerAsync(Seller seller, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(seller, nameof(seller));
+
+            return await _lotsCards
+                .Include(s => s.Seller)
+                .Include(c => c.Images)
+                .Where(l => l.Seller.Equals(seller))
+                .ToListAsync(cancellationToken);
         }
     }
 }

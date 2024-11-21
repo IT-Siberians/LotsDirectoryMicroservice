@@ -12,6 +12,8 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id);
+
             builder.Property(x => x.UserName)
                 .IsRequired()
                 .HasMaxLength(UserNameConstants.MAX_LENGHT)
@@ -20,7 +22,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Configurations
                     value => new UserName(value)
                 );
 
-            builder.HasMany<LotCard>("_lotCards").WithOne(l => l.Seller);
+            builder.HasMany<LotCard>("_lotCards").WithOne(x => x.Seller);
         }
     }
 }

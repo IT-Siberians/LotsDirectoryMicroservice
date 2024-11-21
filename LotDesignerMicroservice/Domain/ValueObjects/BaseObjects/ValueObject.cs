@@ -31,17 +31,19 @@ namespace LotDesignerMicroservice.Domain.ValueObjects.BaseObjects
 
         public override int GetHashCode() => Value!.GetHashCode();
 
-        public override bool Equals(object? other) => Equals(other as ValueObject<T>);
-
         public bool Equals(ValueObject<T>? other)
         {
-            if (other == null || other.GetType() != GetType())
-            {
+            if (other is null)
                 return false;
-            }
-
-            return Equals(Value, other.Value);
+            if (ReferenceEquals(this, other))
+                return true;
+            if (GetType() != other.GetType())
+                return false;
+            return other.Value!.Equals(Value);
         }
+
+        public override bool Equals(object? other)
+            => Equals(other as ValueObject<T>);
 
         public static bool operator ==(ValueObject<T>? left, ValueObject<T>? right)
             => Equals(left, right);

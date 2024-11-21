@@ -5,6 +5,6 @@ namespace LotDesignerMicroservice.Domain.RepositoriesAbstractions.Abstractions
 {
     public interface IImagesRepository : IRepository<Image, Guid>
     {
-        Task<IEnumerable<Image>> GetImagesByLotCardId(Guid lotCardId, CancellationToken cancellationToken);
+        Task<IEnumerable<Image>> GetByLotCardId(Guid lotCardId, CancellationToken cancellationToken);
     }
 }

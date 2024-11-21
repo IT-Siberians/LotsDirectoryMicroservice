@@ -5,6 +5,6 @@ namespace LotDesignerMicroservice.Domain.RepositoriesAbstractions.Abstractions
 {
     public interface ILotsCardsRepository : IRepository<LotCard, Guid>
     {
-        Task<IEnumerable<LotCard>> GetLotsCardsBySeller(Seller seller, CancellationToken cancellationToken);
+        Task<IEnumerable<LotCard>> GetAllBySellerAsync(Seller seller, CancellationToken cancellationToken);
     }
 }

@@ -10,7 +10,7 @@ namespace LotDesignerMicroservice.Infrastructure.EfRepository.Repositories
     {
         private readonly DbSet<Image> _images = context.Set<Image>();
 
-        public async Task<IEnumerable<Image>> GetImagesByLotCardId(Guid lotCardId, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Image>> GetByLotCardId(Guid lotCardId, CancellationToken cancellationToken = default)
         {
             var lotCardImages = await _images
                 .Include(c => c.LotCard)
